@@ -1,12 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
-const TodoApp= ({ todos }) => {
+import { addTodo, delTodo } from "../../redux/store/actions/todoAction"
+
+const TodoApp= ({ todos, addTodo, delTodo }) => {
+
+  const addNewTodo = () => {
+    const data = {
+      id:3,
+      title: "This is three",
+      complete: false
+    }
+    addTodo(data)
+  }
+
   return(
     <div>
       <h1>todo app</h1>
+      <button onClick={addNewTodo}>add</button>
       {todos.map(todo =>
         <div key={todo.id}>
           <p>{todo.title}</p>
+          <button onClick={() => delTodo(todo.id)}>delete</button>
         </div>
       )}
     </div>
@@ -15,4 +29,4 @@ const TodoApp= ({ todos }) => {
 const mapStateToProps = state => ({
   todos: state.todoReducer.todos
 })
-export default connect(mapStateToProps)(TodoApp);
+export default connect(mapStateToProps,{ addTodo, delTodo })(TodoApp);
