@@ -1,8 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import { addTodo, delTodo } from "../../redux/store/actions/todoAction"
 
-const TodoApp= ({ todos, addTodo, delTodo }) => {
+const TodoApp= () => {
+
+  const todos = useSelector(state => state.todoReducer.todos);
+  const dispatch = useDispatch();
 
   const addNewTodo = () => {
     const data = {
@@ -10,7 +13,7 @@ const TodoApp= ({ todos, addTodo, delTodo }) => {
       title: "This is three",
       complete: false
     }
-    addTodo(data)
+    dispatch(addTodo(data))
   }
 
   return(
@@ -20,13 +23,11 @@ const TodoApp= ({ todos, addTodo, delTodo }) => {
       {todos.map(todo =>
         <div key={todo.id}>
           <p>{todo.title}</p>
-          <button onClick={() => delTodo(todo.id)}>delete</button>
+          <button onClick={() => dispatch(delTodo(todo.id))}>delete</button>
         </div>
       )}
     </div>
   )
 }
-const mapStateToProps = state => ({
-  todos: state.todoReducer.todos
-})
-export default connect(mapStateToProps,{ addTodo, delTodo })(TodoApp);
+
+export default TodoApp
